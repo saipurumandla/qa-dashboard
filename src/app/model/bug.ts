@@ -1,9 +1,8 @@
-import { Url } from 'url';
-
-export interface Bug {
-    bugId ?: number;
+export class Bug {
+    $key ?: string;
     status ?: string;
-    url ?: Url;
+    description ?: string;
+    url ?: string;
     closed ?: Date;
     closedBy ?: string;
     created ?: Date;

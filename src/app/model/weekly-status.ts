@@ -1,5 +1,5 @@
-export interface WeeklyStatus {
-    statusId ?: number;
+export class WeeklyStatus {
+    $key ?: string;
     week ?: string;
     ca ?: string[];
     cba ?: string[];

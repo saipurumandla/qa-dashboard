@@ -1,8 +1,8 @@
 import { Bug } from './bug';
 import { WeeklyStatus } from './weekly-status';
 
-export interface Project {
-    projectId ?: number;
+export class Project {
+    $key ?: string;
     projectName ?: string;
     projectAbbr ?: string;
     testCases ?: string[];
