@@ -9,13 +9,22 @@
 <input type="button" value="Click me" (click)= "onClick()">
 <br/>
 <br/>
-<input type="button" value="Click me Bug" (click)= "onBugClick()">
+<input type="button" value="Click me status" (click)= "onWeeklyStatusClick()">
 <br/>
 <br/>
-<input type="button" value="Click me Update" (click)= "updateBug()">
+<input type="button" value="Click me status update" (click)= "updateStatus()">
 <br/>
 <br/>
 <input type="button" value="Click me delete" (click)= "deleteBug()">
+
+
+
+<div *ngIf="statusVal">
+  {{statusVal.created}}
+  </div>
+<br/>
+<br/>
+<input type="button" value="Click me status get" (click)= "getStatus()">
 
 
 

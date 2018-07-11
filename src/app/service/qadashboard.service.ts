@@ -48,39 +48,48 @@ export class QadashboardService {
   getProject($key: string) {
     return this.firebase.object('projects/' + $key);
   }
+  /// Bug CRUD operations
   insertBug(projectkey: string, bug: Bug) {
+    delete bug['$key'];
     const fireObject = this.firebase.list('projects/' + projectkey + '/bugs');
-    return fireObject.push(JSON.parse(JSON.stringify({
-      status : bug.status,
-    url : bug.url,
-    description : bug.description,
-    closed : bug.closed,
-    closedBy : bug.closedBy,
-    created : bug.created,
-    createdBy : bug.createdBy,
-    modified : bug.modifiedBy,
-    modifiedBy : bug.modifiedBy,
-    }))).key;
+    return fireObject.push(JSON.parse(JSON.stringify(bug))).key;
   }
   updateBug(projectkey: string, $key: string, bug: Bug) {
+    delete bug['$key'];
     const fireObject = this.firebase.list('projects/' + projectkey + '/bugs');
     fireObject.update($key,
-      JSON.parse(JSON.stringify({
-        status : bug.status,
-      url : bug.url,
-      description : bug.description,
-      closed : bug.closed,
-      closedBy : bug.closedBy,
-      created : bug.created,
-      createdBy : bug.createdBy,
-      modified : bug.modifiedBy,
-      modifiedBy : bug.modifiedBy,
-      }))).catch(error => this.handleError(error));
+      JSON.parse(JSON.stringify(bug))).catch(error => this.handleError(error));
   }
   removeBug(projectkey: string, $key: string) {
     const fireObject = this.firebase.list('projects/' + projectkey + '/bugs');
     fireObject.remove($key).catch(error => this.handleError(error));
   }
+  getBug(projectkey: string, $key: string) {
+    const fireObject = this.firebase.object('projects/' + projectkey + '/bugs/' + $key);
+    return fireObject;
+  }
+  /// Bug CRUD operations end
+  /// WeeklyStatus CRUD operations
+  insertWeeklyStatus(projectkey: string, status: WeeklyStatus) {
+    delete status['$key'];
+    const fireObject = this.firebase.list('projects/' + projectkey + '/weeklystatuses');
+    return fireObject.push(JSON.parse(JSON.stringify(status))).key;
+  }
+  updateWeeklyStatus(projectkey: string, $key: string, status: WeeklyStatus) {
+    delete status['$key'];
+    const fireObject = this.firebase.list('projects/' + projectkey + '/weeklystatuses');
+    fireObject.update($key,
+      JSON.parse(JSON.stringify(status))).catch(error => this.handleError(error));
+  }
+  removeWeeklyStatus(projectkey: string, $key: string) {
+    const fireObject = this.firebase.list('projects/' + projectkey + '/weeklystatuses');
+    fireObject.remove($key).catch(error => this.handleError(error));
+  }
+  getStatus(projectkey: string, $key: string) {
+    const fireObject = this.firebase.object('projects/' + projectkey + '/weeklystatuses/' + $key);
+    return fireObject;
+  }
+  /// WeeklyStatus CRUD operations end
   private handleError(error) {
     console.log(error);
   }
