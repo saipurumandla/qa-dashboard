@@ -15,7 +15,8 @@ export class QadashboardService {
     return this.projectList;
   }
   insertProject(project: Project) {
-    return this.projectList.push({
+    this.projectList = this.firebase.list('projects');
+    const id  = this.projectList.push({
       projectName : project.projectName,
       projectAbbr : project.projectAbbr,
       testCases : project.testCases,
@@ -27,11 +28,20 @@ export class QadashboardService {
       caCount : project.caCount,
       cbaCount : project.cbaCount
     });
+    this.insertProjectList(id.key, project.projectName);
+    return id.key;
   }
   deleteProject($key: string) {
+    if (this.projectList  == null) {
+      this.getProjects();
+     }
     this.projectList.remove($key).catch(error => this.handleError(error));
+    this.deleteProjectList($key);
   }
   updateProjects(project: Project) {
+    if (this.projectList  == null) {
+      this.getProjects();
+     }
     this.projectList.update(project.$key,
     {
       projectName : project.projectName,
@@ -45,6 +55,9 @@ export class QadashboardService {
       caCount : project.caCount,
       cbaCount : project.cbaCount
     }).catch(error => this.handleError(error));
+    const list = new ProjectList();
+    list.projectname = project.projectName;
+    this.updateProjectList(project.$key, list);
   }
   getProject($key: string) {
     return this.firebase.object('projects/' + $key);
@@ -106,8 +119,19 @@ export class QadashboardService {
     return this.firebase.list('projectslist');
   }
   deleteProjectList($key) {
-    const projectList = this.firebase.list('projectslist');
-    projectList.remove($key).catch(error => this.handleError(error));
+    let key: string = null;
+    this.getProjectList().snapshotChanges().subscribe(item => {
+      item.forEach(element => {
+        const y = element.payload.toJSON();
+        if (y['projectkey'] === $key) {
+          key = element.key;
+        }
+      });
+    });
+    if (key != null) {
+      const projectList = this.firebase.list('projectslist');
+      projectList.remove(key).catch(error => this.handleError(error));
+    }
   }
   private handleError(error) {
     console.log(error);
