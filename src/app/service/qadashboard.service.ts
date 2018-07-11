@@ -3,6 +3,7 @@ import { AngularFireDatabase, AngularFireList, AngularFireObject } from 'angular
 import {Project} from '../model/project';
 import {Bug} from '../model/bug';
 import {WeeklyStatus} from '../model/weekly-status';
+import {ProjectList} from '../model/project-list';
 
 @Injectable()
 export class QadashboardService {
@@ -14,7 +15,7 @@ export class QadashboardService {
     return this.projectList;
   }
   insertProject(project: Project) {
-    this.projectList.push({
+    return this.projectList.push({
       projectName : project.projectName,
       projectAbbr : project.projectAbbr,
       testCases : project.testCases,
@@ -90,6 +91,24 @@ export class QadashboardService {
     return fireObject;
   }
   /// WeeklyStatus CRUD operations end
+  insertProjectList(projectkey: string, projectname: string) {
+    const fireList = this.firebase.list('projectslist');
+    return fireList.push(JSON.parse(JSON.stringify({
+      projectkey: projectkey,
+      projectname: projectname
+    })));
+  }
+  updateProjectList($key: string, project: ProjectList) {
+    const fireList = this.firebase.list('projectslist');
+    fireList.update($key, JSON.parse(JSON.stringify(project))).catch(error => this.handleError(error));
+  }
+  getProjectList() {
+    return this.firebase.list('projectslist');
+  }
+  deleteProjectList($key) {
+    const projectList = this.firebase.list('projectslist');
+    projectList.remove($key).catch(error => this.handleError(error));
+  }
   private handleError(error) {
     console.log(error);
   }

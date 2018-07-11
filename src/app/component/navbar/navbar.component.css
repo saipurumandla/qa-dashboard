@@ -1,0 +1,26 @@
+@media (min-width: 992px)
+{
+    .no-margin {
+        margin-bottom: -4% !important; 
+        margin-top: 0% !important; 
+    }
+    .no-shadow {
+        
+        margin-top: -5% !important; 
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        box-shadow: none;
+        }
+}
+@media (max-width: 992px)
+{
+    .no-shadow {
+        width:100%;
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        box-shadow: none;
+        }
+    .no-margin {
+        width:100%;
+        }
+}

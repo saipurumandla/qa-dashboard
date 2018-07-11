@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 // import { NgForm } from '@angular/forms';
 import {Project} from '../../model/project';
 import {Bug} from '../../model/bug';
@@ -17,6 +17,13 @@ export class ProjectsComponent implements OnInit {
   bugVal: Bug;
   statusVal: WeeklyStatus;
   constructor(private qadashboardService: QadashboardService) { }
+  @ViewChild('content') public contentModal;
+  public name: string;
+
+  show(value: string) {
+      this.name = value;
+      this.contentModal.show();
+  }
 
   ngOnInit() {
     const x = this.qadashboardService.getProjects();
