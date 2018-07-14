@@ -11,6 +11,7 @@ export class WeeklyStatus {
     caCount ?: number;
     cbaCount ?: number;
     ntaCount ?: number;
+    rtaCount ?: number;
     created ?: Date;
     createdBy ?: string;
     modified ?: Date;

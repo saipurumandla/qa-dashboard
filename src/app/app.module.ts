@@ -1,8 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { FormsModule} from '@angular/forms';
+import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { InputsModule, WavesModule } from 'angular-bootstrap-md';
 // Fire Base Imports //
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
@@ -11,6 +13,7 @@ import { environment } from '../environments/environment';
 import { ProjectsComponent } from './component/projects/projects.component';
 import { QadashboardService } from './service/qadashboard.service';
 import { NavbarComponent } from './component/navbar/navbar.component';
+import { ProjectModalComponent } from './component/project-modal/project-modal.component';
 
 
 
@@ -18,16 +21,22 @@ import { NavbarComponent } from './component/navbar/navbar.component';
   declarations: [
     AppComponent,
     ProjectsComponent,
-    NavbarComponent
+    NavbarComponent,
+    ProjectModalComponent
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     MDBBootstrapModule.forRoot(),
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireDatabaseModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule,
+    InputsModule,
+    WavesModule
   ],
   providers: [QadashboardService],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas: [ NO_ERRORS_SCHEMA ]
 })
 export class AppModule { }

@@ -1,63 +1,14 @@
-
-<p>
-  projects works!
-</p>
-<ul>
-<li *ngFor = "let item of projectList"> {{item.$key}} </li>
-
-</ul>
-<br/>
-<button type="button" class="btn btn-sm btn-primary waves-light" mdbWavesEffect (click)= "onClick()">Click me</button>
-<br/>
-<br/>
-<button type="button" class="btn btn-sm btn-success waves-light" mdbWavesEffect (click)= "onWeeklyStatusClick()">Click me status</button>
-<br/>
-<br/>
-<button type="button" class="btn btn-sm btn-warning waves-light" mdbWavesEffect (click)= "updateStatus()">Click me status update</button>
-<br/>
-<br/>
-<button type="button" class="btn btn-sm btn-elegant waves-light" mdbWavesEffect (click)= "deleteBug()">Click me delete</button>
-
-<div *ngIf="statusVal">
-  {{statusVal.created}}
-  </div>
-<br/>
-<br/>
-<button type="button" class="btn btn-sm btn-danger waves-light" mdbWavesEffect (click)= "getStatus()">Click me status get</button>
-
-
-
-<div class="bd-example">
-  <button type="button" class="btn btn-primary waves-light" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo" (click)="show( '@mdo' )" mdbWavesEffect>Open modal for @mdo</button>
-  <button type="button" class="btn btn-primary waves-light" data-toggle="modal" data-target="#exampleModal" data-whatever="@fat" (click)="show( '@fat' )" mdbWavesEffect>Open modal for @fat</button>
-  <button type="button" class="btn btn-primary waves-light" data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap" (click)="show( '@getbootstrap' )" mdbWavesEffect>Open modal for @getbootstrap</button>
-
-  <div mdbModal #content="mdb-modal" class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <h4 class="modal-title" id="exampleModalLabel">New message to {{ name }}</h4>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="content.hide()">
-                      <span aria-hidden="true">×</span>
-                  </button>
-              </div>
-              <div class="modal-body">
-                  <form>
-                      <div class="md-form">
-                          <input type="text" class="form-control" id="recipient-name" [value]="name">
-                      </div>
-                      <div class="md-form">
-                          <textarea type="text" id="message-text" class="md-textarea"></textarea>
-                      </div>
-                  </form>
-              </div>
-              <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary waves-light" data-dismiss="modal" (click)="content.hide()" mdbWavesEffect>Close</button>
-                  <button type="button" class="btn btn-primary waves-light" mdbWavesEffect>Send message</button>
-              </div>
-          </div>
-      </div>
-  </div>
+<div class="btn-group" dropdown>
+    <button dropdownToggle class="btn unique-color dropdown-toggle waves-light" type="button" mdbWavesEffect>
+        {{selectedProject.name}}
+    </button>
+    <div class="dropdown-menu">
+            <span *ngFor = 'let project of projectnames'>
+                    <a *ngIf = ' selectedProject.name != project.name' href="#" class="dropdown-item" (click) = 'selectProject(project)'>{{project.name}}</a>
+            </span>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="#" (click) = 'selectHome()'><i class="fas fa-home"></i> Home</a>
+        <a class="dropdown-item" href="#" (click)="show()"><i class="fas fa-plus-circle pull-down"></i> Add New Project</a>
+        
+    </div>
 </div>
-
-

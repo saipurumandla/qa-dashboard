@@ -1,0 +1,15 @@
+
+    
+              <div class="modal-body">
+    <div class="md-form">
+        <input type="text" id="name" [(ngModel)]="project.projectName" name="text" class="form-control" placeholder="Enter Project Name" >
+        
+      </div>
+      <div class="md-form">
+          <input type="text" id="abbr" [(ngModel)]="project.projectAbbr" name="text" class="form-control" placeholder="Enter Project Abbreviation">
+        </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary btn-sm waves-light" data-dismiss="modal" (click)="content.hide()" mdbWavesEffect>Close</button>
+            <button type="button" class="btn btn-primary btn-sm waves-light" mdbWavesEffect (click)='onSubmit()' >Submit</button>
+        </div>

@@ -1,5 +1,6 @@
 import { Bug } from './bug';
 import { WeeklyStatus } from './weekly-status';
+import { User } from './user';
 
 export class Project {
     $key ?: string;
@@ -10,7 +11,5 @@ export class Project {
     cba ?: string[];
     bugs ?: Bug[];
     weeklyStatus ?: WeeklyStatus[];
-    testCasesCount ?: number;
-    caCount ?: number;
-    cbaCount ?: number;
+    users ?: User[];
 }

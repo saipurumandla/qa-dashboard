@@ -5,6 +5,8 @@ import {Bug} from '../../model/bug';
 
 import {QadashboardService} from '../../service/qadashboard.service';
 import { WeeklyStatus } from '../../model/weekly-status';
+import { element } from 'protractor';
+import { ProjectList } from '../../model/project-list';
 @Component({
   selector: 'app-projects',
   templateUrl: './projects.component.html',
@@ -12,6 +14,9 @@ import { WeeklyStatus } from '../../model/weekly-status';
 })
 export class ProjectsComponent implements OnInit {
   projectList: Project[] = [];
+  projectnames: any[] = [];
+  project: Project = new Project();
+  selectedProject = {name: 'Select Project', id: null};
   bugId: string;
   statusId: string;
   bugVal: Bug;
@@ -19,37 +24,46 @@ export class ProjectsComponent implements OnInit {
   constructor(private qadashboardService: QadashboardService) { }
   @ViewChild('content') public contentModal;
   public name: string;
-
-  show(value: string) {
-      this.name = value;
+  show() {
       this.contentModal.show();
   }
 
   ngOnInit() {
-    const x = this.qadashboardService.getProjects();
+    this.loadProjects();
+  }
+  selectProject(project: any) {
+    this.selectedProject = project;
+    console.log(project);
+  }
+  selectHome() {
+    this.selectedProject = {name: 'Select Project', id: null};
+  }
+  loadProjects() {
+    const x = this.qadashboardService.getProjectList();
     x.snapshotChanges().subscribe(item => {
-      this.projectList = [];
-      item.forEach(element => {
-        const y = element.payload.toJSON();
-        y['$key'] = element.key;
-        this.projectList.push(y as Project);
+      item.forEach(ele => {
+        const y = ele.payload.toJSON() as ProjectList;
+        this.projectnames.push({
+          name: y.projectname,
+          id: y.projectkey
+        });
       });
     });
   }
-  clickTest() {
-    alert('test');
-  }
+
+
+
+
+
+  //// Test Code
   onClick() {
     const project = new Project();
     project.bugs = [];
     project.ca = [];
-    project.caCount = 0;
     project.cba = [];
-    project.cbaCount = 0;
     project.projectAbbr = 'TST';
     project.projectName = 'test';
     project.testCases = [];
-    project.testCasesCount = 0;
     project.weeklyStatus = [];
     this.qadashboardService.insertProject(project);
   }
@@ -72,9 +86,11 @@ export class ProjectsComponent implements OnInit {
     status.createdBy = 'me';
     this.statusId = this.qadashboardService.insertWeeklyStatus(this.projectList[0].$key, status);
   }
+
   getStatus() {
     const status = this.qadashboardService.getStatus(this.projectList[0].$key, this.statusId);
     status.snapshotChanges().subscribe(item => {
+      this.statusVal = null;
       const y = item.payload.toJSON();
         y['$key'] = item.key;
        this.statusVal = y as WeeklyStatus;
