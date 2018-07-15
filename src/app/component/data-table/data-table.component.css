@@ -1,0 +1,36 @@
+.disable {
+    color: #878787;
+    background-color: transparent;
+}
+.enable {
+    color: black;
+    background-color: white;
+}
+.sort:hover {
+    color: white;
+    background-color: #878787;
+}
+.sort {
+    padding: 5px;
+    border-radius: 1px;
+}
+.pagenumber {
+    padding: 5px 10px;
+    box-sizing: border-box;
+    margin-top: -5px;
+    border: 0.5px solid #878787;
+    border-radius: 4px;
+}
+/* For Firefox */
+input[type='number'] {
+    -moz-appearance:textfield;
+}
+/* Webkit browsers like Safari and Chrome */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.page-space {
+    padding:5px;
+}
