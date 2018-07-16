@@ -1,3 +1,6 @@
+<div class="float-right" *ngIf="resetfilter">
+    <button type="button" class="btn btn-success btn-sm btn-rounded waves-light rounded-corner" mdbWavesEffect (click) ="reset()" >Reset Filter</button>
+</div><br>
 <table class="table table-striped">
   <thead>
     <tr>
@@ -5,16 +8,24 @@
             <span *ngIf="(!extended && header.extended == false) || extended">
                 {{header.name}}
                 <a href='#' *ngIf='header.sortable' class="{{selectedCol == i ? 'enable' : 'disable'}} sort float-right"
-                  (click)='sortData(i,true)'>&nbsp;
-                  <span *ngIf="sort[i]">
-                    <i class="fas fa-sort-amount-up"></i>
+                  (click)='sortData(i,true)'>
+                  <span *ngIf="selectedCol == i">
+                      <span *ngIf="sort[i]">
+                          <i class="fas fa-sort-amount-up fa-flip-vertical"></i>
+                        </span>
+                        <span *ngIf="!sort[i]">
+                          <i class="fas fa-sort-amount-down"></i>
+                        </span>
                   </span>
-                  <span *ngIf="!sort[i]">
-                    <i class="fas fa-sort-amount-down"></i>
+                  <span  *ngIf="selectedCol != i">
+                      <i class="fas fa-exchange-alt fa-rotate-90"></i>
                   </span>
                 </a>
             </span>
               
+            </th>
+            <th *ngIf="edit || delete">
+                Edit/Delete
             </th>
       
     </tr>
@@ -42,6 +53,9 @@
         </span>
         </span>
       </th>
+      <th *ngIf="edit || delete">
+          &nbsp;
+      </th>
     </tr>
   </thead>
   <tbody>
@@ -49,8 +63,13 @@
       <td *ngFor="let item of data.data[i]; let in = index" >
           <span *ngIf="(!extended && data.header[in].extended == false) || extended" [innerHtml]='item'> </span>
       </td>
+      <td *ngIf="data.data[i]">
+            <div class="btn-group" role="group" aria-label="Basic example">
+                <button *ngIf="edit" type="button" class="btn btn-primary btn-sm waves-light btn-ed" mdbWavesEffect><i class="far fa-edit"></i></button>
+                <button *ngIf="delete"type="button"  class="btn btn-danger btn-sm waves-light btn-ed" mdbWavesEffect><i class="fas fa-trash"></i></button>
+              </div>  
+      </td>
     </tr>
-
   </tbody>
 </table>
 <nav aria-label="Page navigation example" class='float-right'>

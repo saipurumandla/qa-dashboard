@@ -34,3 +34,9 @@ input[type=number]::-webkit-outer-spin-button {
 .page-space {
     padding:5px;
 }
+.rounded-corner {
+    border-radius: 20px;
+}
+.btn-ed {
+    padding: 10px;
+}

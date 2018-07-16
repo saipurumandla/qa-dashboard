@@ -1,6 +1,6 @@
-export class Bug {
+export class TestCase {
     $key ?: string;
-    bugId ?: string;
+    testCaseId ?: string;
     status ?: string;
     description ?: string;
     url ?: string;

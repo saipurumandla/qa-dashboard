@@ -21,8 +21,6 @@ export class QadashboardService {
       projectName : project.projectName,
       projectAbbr : project.projectAbbr,
       testCases : project.testCases,
-      ca : project.ca,
-      cba : project.cba,
       bugs : project.bugs,
       weeklyStatus : project.weeklyStatus,
       users : project.users
@@ -30,8 +28,6 @@ export class QadashboardService {
     const list = new ProjectList();
     list.projectkey = id.key;
     list.projectname = project.projectName;
-    list.caCount = project.ca.length;
-    list.cbaCount = project.cba.length;
     list.testCasesCount = project.testCases.length;
     this.insertProjectList(list);
     return id.key;
@@ -52,8 +48,6 @@ export class QadashboardService {
       projectName : project.projectName,
       projectAbbr : project.projectAbbr,
       testCases : project.testCases,
-      ca : project.ca,
-      cba : project.cba,
       bugs : project.bugs,
       weeklyStatus : project.weeklyStatus,
       users : project.users

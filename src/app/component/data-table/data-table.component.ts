@@ -13,6 +13,9 @@ export class DataTableComponent implements OnInit {
   @Input('tabledata')tabledata: any;
   @Input('perPage')perPage: number;
   @Input('extended')extended: boolean;
+  @Input('resetfilter')resetfilter: boolean;
+  edit: boolean;
+  delete: boolean;
   data: any;
   alwaysNull = null;
   selectedCol = -1;
@@ -34,6 +37,8 @@ export class DataTableComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    this.edit = true;
+    this.delete = true;
     this.setOptionDefaults();
     this.data = JSON.parse(JSON.stringify(this.tabledata));
     this.sort = new Array(this.data.header.length);
@@ -132,5 +137,9 @@ export class DataTableComponent implements OnInit {
           element.search.value = 'N$ll';
         }
     });
+  }
+  reset() {
+    this.data.header = JSON.parse(JSON.stringify(this.tabledata.header));
+    this.search();
   }
 }
