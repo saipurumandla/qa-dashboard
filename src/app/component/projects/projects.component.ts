@@ -15,6 +15,8 @@ import { ProjectList } from '../../model/project-list';
 export class ProjectsComponent implements OnInit {
   projectList: Project[] = [];
   projectnames: any[] = [];
+  tabledata: any;
+  perPage = 3;
   project: Project = new Project();
   selectedProject = {name: 'Select Project', id: null};
   bugId: string;
@@ -30,6 +32,66 @@ export class ProjectsComponent implements OnInit {
 
   ngOnInit() {
     this.loadProjects();
+    this.tabledata = {
+      header: [
+        {
+          name: 'Test',
+          extended: false,
+          sortable: true,
+          searchable: true,
+          search: {
+            type: 'number'
+          }
+        },
+        {
+          name: 'Test 2',
+          extended: false,
+          sortable: true,
+          searchable: true,
+          search: {
+            type: 'string'
+          }
+        },
+        {
+          name: 'Test 3',
+          extended: false,
+          sortable: true,
+          searchable: true,
+          search: {
+            type: 'options',
+            options: [
+              {
+                name: 'New',
+                value: 'New'
+              },
+              {
+                name: 'Closed',
+                value: 'Closed'
+              },
+              {
+                name: 'In-process',
+                value: 'In-process'
+              },
+            ]
+          }
+        },
+        {
+          name: 'Test 4',
+          extended: true,
+          sortable: true,
+          searchable: true,
+          search: {
+            type: 'date',
+            format: 'MM/DD/YYYY'
+          }
+        }
+      ],
+      data: [
+        [2, 'kumar', 'New', '07/15/2018'],
+        [1, 'harin', 'Closed', '07/15/2018'],
+        [3, 'purumandla', 'In-process', '07/20/2018']
+      ]
+    };
   }
   selectProject(project: any) {
     this.selectedProject = project;

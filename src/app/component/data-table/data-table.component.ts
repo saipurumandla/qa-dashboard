@@ -1,5 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
-
+import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
+import * as moment from 'moment';
+const now = new Date();
 @Component({
   selector: 'app-data-table',
   templateUrl: './data-table.component.html',
@@ -7,82 +9,33 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class DataTableComponent implements OnInit {
   // @Input('data')
+
+  @Input('tabledata')tabledata: any;
+  @Input('perPage')perPage: number;
+  @Input('extended')extended: boolean;
   data: any;
-  extended: boolean;
+  alwaysNull = null;
   selectedCol = -1;
+  searchedId = -1;
   sort: any[];
-  perPage = 1;
   selectedPage = 1;
   boxVal = 1;
   boxPercent = '30px';
   pageList: any[] = [];
   pages = 0;
   recordInPage: any[] = [];
+  model: NgbDateStruct;
+  date: {year: number, month: number};
+
+  selectToday() {
+    this.model = {year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate()};
+  }
 
   constructor() { }
 
   ngOnInit() {
-    this.extended = true;
-
-    this.data = {
-      header: [
-        {
-          name: 'Test',
-          extended: false,
-          sortable: true,
-          searchable: true,
-          search: {
-            type: 'number'
-          }
-        },
-        {
-          name: 'Test 2',
-          extended: false,
-          sortable: true,
-          searchable: true,
-          search: {
-            type: 'string'
-          }
-        },
-        {
-          name: 'Test 3',
-          extended: false,
-          sortable: true,
-          searchable: true,
-          search: {
-            type: 'options',
-            options: [
-              {
-                name: 'New',
-                value: 'New'
-              },
-              {
-                name: 'Closed',
-                value: 'Closed'
-              },
-              {
-                name: 'In-process',
-                value: 'In-process'
-              },
-            ]
-          }
-        },
-        {
-          name: 'Test 4',
-          extended: true,
-          searchable: true,
-          search: {
-            type: 'date',
-            format: 'mm/dd/yyyy'
-          }
-        }
-      ],
-      data: [
-        [2, '25', 'kumar', 'reddy'],
-        [1, '29', 'harin', 'kumar'],
-        [3, '26', 'purumandla', 'harin']
-      ]
-    };
+    this.setOptionDefaults();
+    this.data = JSON.parse(JSON.stringify(this.tabledata));
     this.sort = new Array(this.data.header.length);
     this.recordInPage = new Array(this.data.data.length);
     this.sort.fill(false);
@@ -91,18 +44,14 @@ export class DataTableComponent implements OnInit {
     this.pagination();
 
   }
-  sortData(i: number) {
-    this.selectedCol = i;
-    const order = this.sort[i];
-    this.sort.fill(false);
-    if (!order) {
-      this.data.data.sort(function (a, b) {return a[i] > b[i]; });
-    } else {
-    this.data.data.sort(function (a, b) {return a[i] < b[i]; });
-    }
-    this.sort[i] = !order;
-  }
   pagination() {
+    this.pages =  Math.ceil(this.data.data.length / this.perPage);
+    this.pageList = new Array(this.pages).fill(0).map(function (x, i) { return i + 1; });
+    if (this.selectedPage > this.pages) {
+      this.selectedPage = this.pages;
+    } else if (this.selectedPage === 0) {
+      this.selectedPage = 1;
+    }
     this.recordInPage = [];
     this.boxVal = this.selectedPage;
     for (let _i = this.perPage * (this.selectedPage - 1); this.recordInPage.length < this.perPage && _i < this.data.data.length; _i++) {
@@ -136,5 +85,49 @@ export class DataTableComponent implements OnInit {
     len = 20 + (10 * len);
     this.boxPercent = len.toString() + 'px';
     this.pagination();
+  }
+  formatDate(date: any, format: string, id: number) {
+    date = date.month.toString() + '/' + date.day.toString() + '/' + date.year.toString();
+    this.data.header[id].search.value = moment(new Date(date)).format(format);
+    this.search();
+  }
+  sortData(i: number) {
+    this.selectedCol = i;
+    const order = this.sort[i];
+    this.sort.fill(false);
+    if (!order) {
+      this.data.data.sort(function (a, b) {return a[i] > b[i]; });
+    } else {
+    this.data.data.sort(function (a, b) {return a[i] < b[i]; });
+    }
+    this.sort[i] = !order;
+  }
+  search() {
+    this.data.data = [];
+    this.tabledata.data.forEach(element => {
+      if (this.searchdata(element)) {
+        this.data.data.push(JSON.parse(JSON.stringify(element)));
+      }
+    });
+    this.sortData(this.selectedCol);
+    this.pagination();
+  }
+  searchdata(a: any[]) {
+
+    let res = true;
+    for (let _i = 0; _i < this.data.header.length; _i++) {
+        if (this.data.header[_i].search.value != null && this.data.header[_i].search.value !== '' &&
+        this.data.header[_i].search.value !== 'N$ll') {
+         res = res && a[_i].toString().includes(this.data.header[_i].search.value);
+        }
+    }
+    return res;
+  }
+  setOptionDefaults() {
+    this.tabledata.header.forEach(element => {
+        if (element.searchable && element.search.type === 'options') {
+          element.search.value = 'N$ll';
+        }
+    });
   }
 }

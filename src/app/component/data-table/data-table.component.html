@@ -1,48 +1,91 @@
-
 <table class="table table-striped">
-    <thead>
-        <tr>
-            <th *ngFor="let header of data.header;let i=index">
-                {{header.name}} <a href='#' *ngIf='header.sortable'  class="{{selectedCol == i ? 'enable' : 'disable'}} sort float-right" (click)='sortData(i)' >&nbsp;<span *ngIf="sort[i]"><i class="fas fa-sort-amount-up"></i></span><span *ngIf="!sort[i]"><i class="fas fa-sort-amount-down"></i></span></a>
-              </th>
-        </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let i of recordInPage;">
-       <td *ngFor="let item of data.data[i]" [innerHtml] = 'item'>
-         
-       </td>
-      </tr>
-    
-    </tbody>
-  </table>
-  <nav aria-label="Page navigation example" class='float-right'>
-      <ul class="pagination">
-          <li class="page-item page">
-              <a class="page-link" href="#" aria-label="First" (click) = 'changePage(1)'>
-                <span aria-hidden="true"><i class="fas fa-step-backward" style="font-size: 0.6em;"></i></span>
-                <span class="sr-only page">First</span>
-              </a>
-              </li>
-        <li class="page-item">
-          <a class="page-link" href="#" aria-label="Previous" (click) = 'changePage(selectedPage-1)' >
-            <span aria-hidden="true">&laquo;</span>
-            <span class="sr-only page">Previous</span>
-          </a>
-        </li>
-        <!-- <li   *ngFor="let val of pageList" class="page-item page" (click) = 'changePage(val)' ><a class="page-link" href="#"> {{val}} </a></li> -->
-        <li class="page-item page-space page">Page <input type="number" [(ngModel)] = 'boxVal' name= 'boxVal' class="pagenumber" placeholder="PgNo" size="1" [ngStyle]="{'width': boxPercent}" (keyup) = 'changePageNumber(pageNumber.value)' (blur)='focusOut(pageNumber.value)'  #pageNumber> of {{pages}} </li>
-        <li class="page-item page">
-          <a class="page-link" href="#" aria-label="Next"  (click) = 'changePage(selectedPage+1)'>
-            <span aria-hidden="true">&raquo;</span>
-            <span class="sr-only page">Next</span>
-          </a>
-        </li>
-        <li class="page-item page">
-            <a class="page-link" href="#" aria-label="Last" (click) = 'changePage(pageList.length)'>
-              <span aria-hidden="true"><i class="fas fa-step-forward" style="font-size: 0.6em;"></i></span>
-              <span class="sr-only page">Last</span>
-            </a>
-            </li>
-      </ul>
-    </nav>
+  <thead>
+    <tr>
+          <th  *ngFor="let header of data.header;let i=index" >
+            <span *ngIf="(!extended && header.extended == false) || extended">
+                {{header.name}}
+                <a href='#' *ngIf='header.sortable' class="{{selectedCol == i ? 'enable' : 'disable'}} sort float-right"
+                  (click)='sortData(i)'>&nbsp;
+                  <span *ngIf="sort[i]">
+                    <i class="fas fa-sort-amount-up"></i>
+                  </span>
+                  <span *ngIf="!sort[i]">
+                    <i class="fas fa-sort-amount-down"></i>
+                  </span>
+                </a>
+            </span>
+              
+            </th>
+      
+    </tr>
+    <tr>
+      <th *ngFor="let header of data.header;let i=index">
+          <span *ngIf="(!extended && header.extended == false) || extended">
+        <span *ngIf="header.searchable">
+          <span *ngIf="header.search.type == 'number'">
+            <input type="number" [id]="i" [(ngModel)]="header.search.value" name="number" class="form-control"  [placeholder]="'search '+header.name" (change)= "search()" >
+          </span>
+          <span *ngIf="header.search.type == 'string'">
+            <input type="text" [id]="i" [(ngModel)]="header.search.value" name="string" class="form-control" [placeholder]="'search '+header.name" (change)= "search()">
+          </span>
+          <span *ngIf="header.search.type == 'options'">
+              <select class="form-control" [id]="i" [(ngModel)] = "header.search.value" name="option" (change)= "search()">
+                <option value="N$ll">Select {{header.name}}</option>
+                  <option *ngFor="let option of header.search.options" [value]="option.value"> {{option.name}}</option>
+                </select>
+          </span>
+        </span>
+        <span *ngIf="header.search.type =='date'">
+            <input type="text" [(ngModel)]="header.search.value" name="datevalue" class="form-control"  [placeholder]="'select '+header.name + ' date'" (focus)="d.toggle()" (change)= "search()">
+                    <input placeholder="yyyy-mm-dd"
+                           name="dp" [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker" (focus)="d.toggle()" (dateSelect) = "formatDate($event,header.search.format,i)" style="z-index: -1; position: absolute; width:1%; margin-top: -30px;" >
+        </span>
+        </span>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let i of recordInPage;">
+      <td *ngFor="let item of data.data[i]; let in = index" >
+          <span *ngIf="(!extended && data.header[in].extended == false) || extended" [innerHtml]='item'> </span>
+      </td>
+    </tr>
+
+  </tbody>
+</table>
+<nav aria-label="Page navigation example" class='float-right'>
+  <ul class="pagination">
+    <li class="page-item page">
+      <a class="page-link" href="#" aria-label="First" (click)='changePage(1)'>
+        <span aria-hidden="true">
+          <i class="fas fa-step-backward" style="font-size: 0.6em;"></i>
+        </span>
+        <span class="sr-only page">First</span>
+      </a>
+    </li>
+    <li class="page-item">
+      <a class="page-link" href="#" aria-label="Previous" (click)='changePage(selectedPage-1)'>
+        <span aria-hidden="true">&laquo;</span>
+        <span class="sr-only page">Previous</span>
+      </a>
+    </li>
+    <!-- <li   *ngFor="let val of pageList" class="page-item page" (click) = 'changePage(val)' ><a class="page-link" href="#"> {{val}} </a></li> -->
+    <li class="page-item page-space page">Page
+      <input type="number" [(ngModel)]='boxVal' name='boxVal' class="pagenumber" placeholder="PgNo" size="1" [ngStyle]="{'width': boxPercent}"
+        (keyup)='changePageNumber(pageNumber.value)' (blur)='focusOut(pageNumber.value)' #pageNumber> of {{pages}} </li>
+    <li class="page-item page">
+      <a class="page-link" href="#" aria-label="Next" (click)='changePage(selectedPage+1)'>
+        <span aria-hidden="true">&raquo;</span>
+        <span class="sr-only page">Next</span>
+      </a>
+    </li>
+    <li class="page-item page">
+      <a class="page-link" href="#" aria-label="Last" (click)='changePage(pageList.length)'>
+        <span aria-hidden="true">
+          <i class="fas fa-step-forward" style="font-size: 0.6em;"></i>
+        </span>
+        <span class="sr-only page">Last</span>
+      </a>
+    </li>
+  </ul>
+</nav>
