@@ -91,8 +91,11 @@ export class DataTableComponent implements OnInit {
     this.data.header[id].search.value = moment(new Date(date)).format(format);
     this.search();
   }
-  sortData(i: number) {
+  sortData(i: number, toggle: boolean) {
     this.selectedCol = i;
+    if (toggle === false) {
+      this.sort[i] = !this.sort[i];
+    }
     const order = this.sort[i];
     this.sort.fill(false);
     if (!order) {
@@ -109,7 +112,7 @@ export class DataTableComponent implements OnInit {
         this.data.data.push(JSON.parse(JSON.stringify(element)));
       }
     });
-    this.sortData(this.selectedCol);
+    this.sortData(this.selectedCol, false);
     this.pagination();
   }
   searchdata(a: any[]) {

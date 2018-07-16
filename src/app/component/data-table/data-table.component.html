@@ -5,7 +5,7 @@
             <span *ngIf="(!extended && header.extended == false) || extended">
                 {{header.name}}
                 <a href='#' *ngIf='header.sortable' class="{{selectedCol == i ? 'enable' : 'disable'}} sort float-right"
-                  (click)='sortData(i)'>&nbsp;
+                  (click)='sortData(i,true)'>&nbsp;
                   <span *ngIf="sort[i]">
                     <i class="fas fa-sort-amount-up"></i>
                   </span>
