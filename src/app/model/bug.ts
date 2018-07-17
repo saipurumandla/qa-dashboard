@@ -1,7 +1,7 @@
 export class Bug {
     $key ?: string;
     bugId ?: string;
-    status ?: string;
+    status ?: number;
     description ?: string;
     url ?: string;
     closed ?: Date;

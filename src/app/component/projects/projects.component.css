@@ -2,3 +2,14 @@
 color:white;
 background-color:#3f729b !important;
 }
+.rounded-corner {
+    border-radius: 5px;
+    padding:5px;
+    font-size: 15px;
+    margin-top: -10px;
+}
+.modal-open .modal {
+
+    overflow-y: auto;
+    
+    }

@@ -1,7 +1,7 @@
 export class TestCase {
     $key ?: string;
     testCaseId ?: string;
-    status ?: string;
+    status ?: number;
     description ?: string;
     url ?: string;
     closed ?: Date;

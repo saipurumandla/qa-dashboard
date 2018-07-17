@@ -1,0 +1,31 @@
+
+<div class="modal-body">
+        <span *ngIf="projectkey">
+  <div class="md-form">
+    <input type="text" id="name" [(ngModel)]="bug.bugId" name="text" class="form-control" placeholder="Enter New Bug Id">
+  </div>
+  <div class="md-form">
+        <select class="form-control" id="status" [(ngModel)]= 'bug.status' name="status" >
+                <option value='1'>New</option>
+                <option value='2'>In-Progress</option>
+                <option value='3'>Closed</option>
+              </select>
+  </div>
+  <div class="md-form">
+        <textarea class="form-control" id="description"  [(ngModel)]="bug.description" rows="3" placeholder="Enter the Bug Description"></textarea>
+      </div>
+  <div class="md-form">
+    <input type="text" id="abbr" [(ngModel)]="bug.url" name="text" class="form-control" placeholder="Enter Url for Bug">
+  </div>
+  </span>
+  <span *ngIf="!projectkey">
+        <div class="alert alert-danger" role="alert">
+              Select A Project To Add Bugs.
+              </div>
+  </span>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary btn-sm waves-light" data-dismiss="modal" (click)="content.hide()" mdbWavesEffect>Close</button>
+  <button type="button" *ngIf="bug.$key != null && projectkey" class="btn btn-danger btn-sm waves-light" mdbWavesEffect (click)='Delete()'>delete</button>
+  <button type="button" *ngIf="projectkey" class="btn btn-primary btn-sm waves-light" mdbWavesEffect (click)='onSubmit()'>Submit</button>
+</div>

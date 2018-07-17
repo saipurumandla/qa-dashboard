@@ -17,6 +17,8 @@ import { QadashboardService } from './service/qadashboard.service';
 import { NavbarComponent } from './component/navbar/navbar.component';
 import { ProjectModalComponent } from './component/project-modal/project-modal.component';
 import { DataTableComponent } from './component/data-table/data-table.component';
+import { BugModalComponent } from './component/bug-modal/bug-modal.component';
+import { TestcaseModalComponent } from './component/testcase-modal/testcase-modal.component';
 
 
 
@@ -26,7 +28,9 @@ import { DataTableComponent } from './component/data-table/data-table.component'
     ProjectsComponent,
     NavbarComponent,
     ProjectModalComponent,
-    DataTableComponent
+    DataTableComponent,
+    BugModalComponent,
+    TestcaseModalComponent
   ],
   imports: [
     BrowserModule,

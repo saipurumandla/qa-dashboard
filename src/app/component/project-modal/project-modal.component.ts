@@ -19,8 +19,6 @@ export class ProjectModalComponent implements OnInit {
   onSubmit() {
     if (this.project.$key == null) {
       this.project.bugs = [];
-      this.project.ca = [];
-      this.project.cba = [];
       this.project.testCases = [];
       this.project.weeklyStatus = [];
       this.project.users = [];

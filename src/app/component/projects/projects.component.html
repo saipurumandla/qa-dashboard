@@ -8,10 +8,18 @@
             </span>
         <div class="dropdown-divider"></div>
         <a class="dropdown-item" href="#" (click) = 'selectHome()'><i class="fas fa-home"></i> Home</a>
-        <a class="dropdown-item" href="#" (click)="show()"><i class="fas fa-plus-circle pull-down"></i> Add New Project</a>
+        <a class="dropdown-item" href="#" (click)="show(1)"><i class="fas fa-plus-circle pull-down"></i> Add New Project</a>
         
     </div>
 </div>
+<br/>
+<br/>
+<div class="bug-section">
+      <h3>Bugs <button type="button" class="btn unique-color btn-sm rounded-corner" mdbWavesEffect (click) ="show(2)" ><i class="fas fa-plus-circle"></i></button></h3>  
+</div>
+<div class="bug-section">
+        <h3>Test Cases <button type="button" class="btn unique-color btn-sm rounded-corner" mdbWavesEffect (click) ="show(3)" ><i class="fas fa-plus-circle"></i></button></h3>  
+  </div>
 <br/>
 <app-data-table [perPage] = "perPage" [tabledata] ="tabledata" [extended]="true" [resetfilter]="true" ></app-data-table>
 <div class="bd-example">
@@ -24,7 +32,15 @@
                       <span aria-hidden="true">×</span>
                   </button>
               </div>
-                <app-project-modal [project] = "project" [content] = "content" ></app-project-modal>
+              <span *ngIf="modalSelect == 1">
+                    <app-project-modal [project] = "project" [content] = "content" ></app-project-modal>
+              </span>
+              <span *ngIf="modalSelect == 2">
+                  <app-bug-modal [content] = "content" [projectkey] = "selectedProject.id" [bug] ="selectedBug"></app-bug-modal>
+              </span>
+              <span *ngIf="modalSelect == 3">
+                    <app-testcase-modal [content] = "content" [projectkey] = "selectedProject.id" [testcase] ="selectedTestCase"></app-testcase-modal>
+                </span>
           </div>
       </div>
   </div>

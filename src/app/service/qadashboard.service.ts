@@ -5,6 +5,7 @@ import {Bug} from '../model/bug';
 import {WeeklyStatus} from '../model/weekly-status';
 import {ProjectList} from '../model/project-list';
 import { User } from '../model/user';
+import { TestCase } from '../model/testcase';
 
 @Injectable()
 export class QadashboardService {
@@ -29,6 +30,7 @@ export class QadashboardService {
     list.projectkey = id.key;
     list.projectname = project.projectName;
     list.testCasesCount = project.testCases.length;
+    list.testCasesCount = project.bugs.length;
     this.insertProjectList(list);
     return id.key;
   }
@@ -81,6 +83,27 @@ export class QadashboardService {
     return fireObject;
   }
   /// Bug CRUD operations end
+    /// Bug CRUD operations
+    insertTestCase(projectkey: string, testcase: TestCase) {
+      delete testcase['$key'];
+      const fireObject = this.firebase.list('projects/' + projectkey + '/testcases');
+      return fireObject.push(JSON.parse(JSON.stringify(testcase))).key;
+    }
+    updateTestCase(projectkey: string, $key: string, testcase: TestCase) {
+      delete testcase['$key'];
+      const fireObject = this.firebase.list('projects/' + projectkey + '/testcases');
+      fireObject.update($key,
+        JSON.parse(JSON.stringify(testcase))).catch(error => this.handleError(error));
+    }
+    removeTestCase(projectkey: string, $key: string) {
+      const fireObject = this.firebase.list('projects/' + projectkey + '/testcases');
+      fireObject.remove($key).catch(error => this.handleError(error));
+    }
+    getTestCase(projectkey: string, $key: string) {
+      const fireObject = this.firebase.object('projects/' + projectkey + '/testcases/' + $key);
+      return fireObject;
+    }
+    /// Bug CRUD operations end
   /// WeeklyStatus CRUD operations
   insertWeeklyStatus(projectkey: string, status: WeeklyStatus) {
     delete status['$key'];
@@ -107,24 +130,15 @@ export class QadashboardService {
     return fireList.push(JSON.parse(JSON.stringify(project)));
   }
   updateProjectList($key: string, project: ProjectList) {
-    let key: string = null;
     const fireList = this.firebase.list('projectslist');
-    fireList.snapshotChanges().subscribe(item => {
-      item.forEach(element => {
-        const y = element.payload.toJSON();
-        if (y['projectkey'] === $key) {
-          key = element.key;
-        }
-      });
-    });
-    fireList.update(key, JSON.parse(JSON.stringify(project))).catch(error => this.handleError(error));
+    fireList.update($key, JSON.parse(JSON.stringify(project))).catch(error => this.handleError(error));
   }
-  getProjectList() {
+  getAllProjectList() {
     return this.firebase.list('projectslist');
   }
   deleteProjectList($key) {
     let key: string = null;
-    this.getProjectList().snapshotChanges().subscribe(item => {
+    this.getAllProjectList().snapshotChanges().subscribe(item => {
       item.forEach(element => {
         const y = element.payload.toJSON();
         if (y['projectkey'] === $key) {
@@ -137,6 +151,20 @@ export class QadashboardService {
       projectList.remove(key).catch(error => this.handleError(error));
     }
   }
+getProjectList($key) {
+  let obj: any = null;
+  this.getAllProjectList().snapshotChanges().subscribe(item => {
+    item.forEach(element => {
+      const y = element.payload.toJSON();
+      if (y['projectkey'] === $key) {
+        y['$key'] = element.key;
+        obj = y;
+        return obj;
+      }
+    });
+  });
+  return obj;
+}
   insertUser(projectkey: string, user: User) {
     delete user['$key'];
     const fireObject = this.firebase.list('projects/' + projectkey + '/users');

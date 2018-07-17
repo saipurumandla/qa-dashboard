@@ -7,6 +7,7 @@ import {QadashboardService} from '../../service/qadashboard.service';
 import { WeeklyStatus } from '../../model/weekly-status';
 import { element } from 'protractor';
 import { ProjectList } from '../../model/project-list';
+import { TestCase } from '../../model/testcase';
 @Component({
   selector: 'app-projects',
   templateUrl: './projects.component.html',
@@ -17,8 +18,11 @@ export class ProjectsComponent implements OnInit {
   projectnames: any[] = [];
   tabledata: any;
   perPage = 3;
+  modalSelect = 0;
   project: Project = new Project();
   selectedProject = {name: 'Select Project', id: null};
+  selectedBug: Bug = new Bug();
+  selectedTestCase = new TestCase();
   bugId: string;
   statusId: string;
   bugVal: Bug;
@@ -26,7 +30,8 @@ export class ProjectsComponent implements OnInit {
   constructor(private qadashboardService: QadashboardService) { }
   @ViewChild('content') public contentModal;
   public name: string;
-  show() {
+  show(modalId: number) {
+    this.modalSelect = modalId;
       this.contentModal.show();
   }
 
@@ -101,7 +106,7 @@ export class ProjectsComponent implements OnInit {
     this.selectedProject = {name: 'Select Project', id: null};
   }
   loadProjects() {
-    const x = this.qadashboardService.getProjectList();
+    const x = this.qadashboardService.getAllProjectList();
     x.snapshotChanges().subscribe(item => {
       item.forEach(ele => {
         const y = ele.payload.toJSON() as ProjectList;
@@ -121,8 +126,6 @@ export class ProjectsComponent implements OnInit {
   onClick() {
     const project = new Project();
     project.bugs = [];
-    project.ca = [];
-    project.cba = [];
     project.projectAbbr = 'TST';
     project.projectName = 'test';
     project.testCases = [];
@@ -134,7 +137,7 @@ export class ProjectsComponent implements OnInit {
     bug.created = new Date(Date.now());
     bug.createdBy = 'me';
     bug.description = 'Test Bug';
-    bug.status = 'Open';
+    bug.status = 2;
     bug.url = 'https://www.google.com/';
     this.bugId = this.qadashboardService.insertBug(this.projectList[0].$key, bug);
     // this.projectList[0].$key
@@ -168,7 +171,7 @@ export class ProjectsComponent implements OnInit {
     bug.created = new Date(Date.now());
     bug.createdBy = 'me';
     bug.description = 'Test Bug';
-    bug.status = 'Open';
+    bug.status = 2;
     bug.url = 'https://www.facebook.com/';
     this.qadashboardService.updateBug(this.projectList[0].$key, this.bugId, bug);
   }
