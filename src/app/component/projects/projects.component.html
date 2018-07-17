@@ -36,10 +36,10 @@
                     <app-project-modal [project] = "project" [content] = "content" ></app-project-modal>
               </span>
               <span *ngIf="modalSelect == 2">
-                  <app-bug-modal [content] = "content" [projectkey] = "selectedProject.id" [bug] ="selectedBug"></app-bug-modal>
+                  <app-bug-modal [content] = "content" [projectkey] = "selectedProject.id"  [projectname] = "selectedProject.name" [bug] ="selectedBug"></app-bug-modal>
               </span>
               <span *ngIf="modalSelect == 3">
-                    <app-testcase-modal [content] = "content" [projectkey] = "selectedProject.id" [testcase] ="selectedTestCase"></app-testcase-modal>
+                    <app-testcase-modal [content] = "content" [projectkey] = "selectedProject.id"  [projectname] = "selectedProject.name" [testcase] ="selectedTestCase"></app-testcase-modal>
                 </span>
           </div>
       </div>

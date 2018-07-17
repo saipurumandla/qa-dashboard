@@ -29,8 +29,16 @@ export class QadashboardService {
     const list = new ProjectList();
     list.projectkey = id.key;
     list.projectname = project.projectName;
-    list.testCasesCount = project.testCases.length;
-    list.testCasesCount = project.bugs.length;
+    list.bugCount = 0;
+    list.caCount = 0;
+    list.cbaCount = 0;
+    list.cbCount = 0;
+    list.ipbCount = 0;
+    list.nbCount = 0;
+    list.ntaCount = 0;
+    list.testCasesCount = 0;
+    list.rbCount = 0;
+    list.rtaCount = 0;
     this.insertProjectList(list);
     return id.key;
   }
@@ -131,7 +139,14 @@ export class QadashboardService {
   }
   updateProjectList($key: string, project: ProjectList) {
     const fireList = this.firebase.list('projectslist');
-    fireList.update($key, JSON.parse(JSON.stringify(project))).catch(error => this.handleError(error));
+    this.getAllProjectList().snapshotChanges().subscribe(item => {
+      item.forEach(element => {
+        const y = element.payload.toJSON() as ProjectList;
+        if (y['projectkey'] === $key) {
+          fireList.update(element.key, JSON.parse(JSON.stringify(this.MergeList(y, project)))).catch(error => this.handleError(error));
+        }
+      });
+    });
   }
   getAllProjectList() {
     return this.firebase.list('projectslist');
@@ -186,5 +201,20 @@ getProjectList($key) {
   }
   private handleError(error) {
     console.log(error);
+  }
+  private MergeList(oldList: ProjectList, newList: ProjectList) {
+    oldList.projectname = newList.projectname ? newList.projectname : oldList.projectname;
+    oldList.bugCount += newList.bugCount;
+    oldList.caCount += newList.caCount;
+    oldList.cbaCount += newList.cbaCount;
+    oldList.cbCount += newList.cbCount;
+    oldList.ipbCount += newList.ipbCount;
+    oldList.nbCount += newList.nbCount;
+    oldList.ntaCount += newList.ntaCount;
+    oldList.testCasesCount += newList.testCasesCount;
+    oldList.rbCount += newList.rbCount;
+    oldList.rtaCount += newList.rtaCount;
+
+    return oldList;
   }
 }

@@ -9,6 +9,7 @@
                 <option value='1'>New</option>
                 <option value='2'>In-Progress</option>
                 <option value='3'>Closed</option>
+                <option value='4'>Removed</option>
               </select>
   </div>
   <div class="md-form">
@@ -26,6 +27,6 @@
 </div>
 <div class="modal-footer">
   <button type="button" class="btn btn-secondary btn-sm waves-light" data-dismiss="modal" (click)="content.hide()" mdbWavesEffect>Close</button>
-  <button type="button" *ngIf="bug.$key != null && projectkey" class="btn btn-danger btn-sm waves-light" mdbWavesEffect (click)='Delete()'>delete</button>
+  <!-- <button type="button" *ngIf="bug.$key != null && projectkey" class="btn btn-danger btn-sm waves-light" mdbWavesEffect (click)='Delete()'>delete</button> -->
   <button type="button" *ngIf="projectkey" class="btn btn-primary btn-sm waves-light" mdbWavesEffect (click)='onSubmit()'>Submit</button>
 </div>
